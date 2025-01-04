@@ -1,34 +1,34 @@
 import React from "react";
 
-const HaircutAndStyle = () => {
+const HairSpa = () => {
   const services = [
     {
-      title: "Haircut",
-      price: "NRs 600",
-      description: ["Haircut to give you a glam look", "Excludes hairwash"],
-      image: "Haircut.webp",
+      title: "Hair Spa & Blowdry Styling",
+      price: "NRs 2000",
+      description: ["Hair spa with blowdry styling included"],
+      image: "Hair_Spa&Blowdry_Styling.jpg",
     },
     {
-      title: "Haircut & Blowdry Styling",
+      title: "Hair Spa with Blowdry ",
       price: "NRs 1500",
       description: [
-        "Straight / incurl / outcurl styling",
-        "Haircut to give you a glam look",
+        "6 steps repair treatment to revive & straighthen damaged hair",
+        "Steam therapy included",
       ],
-      image: "Haircut&Blowdry_Styling.jpg",
+      image: "HairSpawithBlowdry.jpg",
     },
     {
-      title: "Haircut + Iron Straightening / Curling",
-      price: "NRs 1500",
-      description: ["Straightening with iron rod", "Curls with tongs"],
-      image: "Haircut_Iron_Straightening_Curling.jpg",
+      title: "Head, Neck and Shoulder Massage",
+      price: "NRs 1000",
+      description: ["Speacially curated techniques to eliminate stress"],
+      image: "Head_NeckandShoulder_Massage.jpg",
     },
   ];
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Haircut & Style Services</h1>
+        <h1 style={styles.title}>Hair Spa Services</h1>
       </div>
       <div style={styles.row}>
         {services.map((service, index) => (
@@ -155,4 +155,4 @@ const styles = {
   },
 };
 
-export default HaircutAndStyle;
+export default HairSpa;

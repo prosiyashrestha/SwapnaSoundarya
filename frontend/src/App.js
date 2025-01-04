@@ -19,12 +19,14 @@ import ManicurePedicure from "./pages/Manicure&Pedicure";
 import FacialCleanup from "./pages/Facial&Cleanup";
 import Threading from "./pages/Threading";
 import HaircareMassage from "./pages/Haircare&Massage";
+import HaircutAndStyle from "./pages/Haircut&Style";
+import HairSpa from "./pages/HairSpa";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <HaircareMassage />
+      <HairSpa />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />
