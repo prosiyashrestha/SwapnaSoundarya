@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <header style={styles.header}>
       {/* Logo Section */}
-      <div style={styles.logoSection}>
+      <div style={styles.navItem}>
         <img src="logo.png" alt="Swapna Soundarya Logo" style={styles.logo} />
       </div>
 
@@ -28,7 +28,7 @@ const Navbar = () => {
       </nav>
 
       {/* User Icon */}
-      <div style={styles.userIcon}>
+      <div style={styles.navItem}>
         <img src="user.png" alt="User Icon" style={styles.userIconImage} />
       </div>
     </header>
@@ -44,28 +44,24 @@ const styles = {
     padding: "10px 40px",
     borderBottom: "1px solid #ccc",
   },
-  logoSection: {
-    flex: 1,
-  },
-  logo: {
-    height: "100px",
-  },
-  nav: {
-    display: "flex",
-    flex: 3,
-    justifyContent: "center",
-    gap: "20px",
-  },
   navItem: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     textDecoration: "none",
     color: "#000",
     fontSize: "16px",
     fontWeight: "bold",
   },
-  userIcon: {
-    flex: 1,
+  logo: {
+    height: "110px",
+  },
+  nav: {
     display: "flex",
-    justifyContent: "flex-end",
+    flex: 4,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   userIconImage: {
     height: "40px",
