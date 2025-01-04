@@ -26,12 +26,13 @@ import HairStraight from "./pages/HairStraight";
 import MakeupPackage from "./pages/MakeupPackage";
 import Makeup from "./pages/Makeup";
 import HairStyling from "./pages/HairStyling";
+import LongLastingGelPolish from "./pages/LongLastingGelPolish";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <HairStyling />
+      <LongLastingGelPolish />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />

@@ -79,7 +79,7 @@ const styles = {
     width: "600px",
     height: "170px",
     borderRadius: "20px",
-    backgroundColor: "#fff",
+    backgroundColor: "#D9D9D9",
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
     overflow: "hidden",
     flexDirection: "row",

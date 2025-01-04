@@ -1,31 +1,23 @@
 import React from "react";
 
-const ManicurePedicure = () => {
+const LongLastingGelPolish = () => {
   const services = [
     {
-      title: "Pedicure",
+      title: "Gel Polish Hand",
+      price: "NRs 1400",
+      image: "GelPolishHand.jpg",
+    },
+    {
+      title: "Gel Polish Feet",
       price: "NRs 1500",
-      description: ["Nourished legs", "Relaxing experience"],
-      image: "pedicure.webp",
-    },
-    {
-      title: "Manicure",
-      price: "NRs 1200",
-      description: ["Nourished hands", "Relaxing experience"],
-      image: "manicure.jpg",
-    },
-    {
-      title: "Manicure & Pedicure",
-      price: "NRs 2500",
-      description: ["Nourished hands and legs", "Relaxing experience"],
-      image: "manicure&pedicure.jpg",
+      image: "GelPolishFeet.jpeg",
     },
   ];
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Manicure & Pedicure Services</h1>
+        <h1 style={styles.title}>Long Lasting Gel Polish Services</h1>
       </div>
       <div style={styles.row}>
         {services.map((service, index) => (
@@ -40,13 +32,6 @@ const ManicurePedicure = () => {
               <div style={styles.textWrapper}>
                 <h5 style={styles.cardTitle}>{service.title}</h5>
                 <p style={styles.price}>{service.price}</p>
-                <ul style={styles.description}>
-                  {service.description.map((item, i) => (
-                    <li key={i} style={styles.descriptionItem}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
                 <button style={styles.button}>Book Now</button>
               </div>
             </div>
@@ -128,17 +113,7 @@ const styles = {
     fontSize: "14px",
     fontWeight: "bold",
     color: "#E91E63",
-    marginBottom: "0px", // Tight gap between price and description
-  },
-  description: {
-    listStyleType: "disc",
-    paddingLeft: "20px",
-    marginBottom: "8px", // Slightly reduced gap before the button
-  },
-  descriptionItem: {
-    fontSize: "14px",
-    color: "#777",
-    marginBottom: "0px", // Reduced spacing between list items
+    marginBottom: "8px", // Tight gap between price and description
   },
   button: {
     backgroundColor: "#E91E63",
@@ -152,4 +127,4 @@ const styles = {
   },
 };
 
-export default ManicurePedicure;
+export default LongLastingGelPolish;

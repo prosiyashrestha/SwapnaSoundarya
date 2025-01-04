@@ -90,7 +90,7 @@ const styles = {
     borderRadius: "16px",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
     overflow: "hidden",
-    backgroundColor: "#fff",
+    backgroundColor: "#D9D9D9",
     display: "flex",
     flexDirection: "column",
   },
