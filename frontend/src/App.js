@@ -7,12 +7,13 @@ import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import Services from "./pages/Services";
 import AboutUs from "./pages/AboutUs";
+import Faqs from "./pages/Faqs";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <AboutUs />
+      <Faqs />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />
