@@ -17,12 +17,14 @@ import Lashes from "./pages/Lashes";
 import Wax from "./pages/Wax";
 import ManicurePedicure from "./pages/Manicure&Pedicure";
 import FacialCleanup from "./pages/Facial&Cleanup";
+import Threading from "./pages/Threading";
+import HaircareMassage from "./pages/Haircare&Massage";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <FacialCleanup />
+      <HaircareMassage />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />

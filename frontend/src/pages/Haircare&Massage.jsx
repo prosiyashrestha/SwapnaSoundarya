@@ -1,28 +1,37 @@
 import React from "react";
 
-const Threading = () => {
+const HaircareMassage = () => {
   const services = [
     {
-      title: "Full face threading",
-      price: "NRs 400",
-      image: "full_face_threading.jpg",
+      title: "Head Neck & Shoulder Oil Massage",
+      price: "NRs 1000",
+      description: [
+        "Complete olive oil application",
+        "Specially curated techniques to eliminate stress",
+      ],
+      image: "Head_Neck&Shoulder_Oil_Massage.jpg",
     },
     {
-      title: "Upperlips threading",
-      price: "NRs 60",
-      image: "upperlips_threading.jpg",
+      title: "Haircolor / Mehendi",
+      price: "NRs 1000",
+      description: [
+        "Expert application of haircolor / mehendi",
+        "We do not provide color",
+      ],
+      image: "Haircolor_Mehendi.jpg",
     },
     {
-      title: "Eyebrows threading",
-      price: "NRs 100",
-      image: "eyebrow_threading.jpg",
+      title: "Foot Massage",
+      price: "NRs 800",
+      description: ["Olive oil foot massage"],
+      image: "Foot_Massage.webp",
     },
   ];
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Threading Services</h1>
+        <h1 style={styles.title}>Haircare & Massage Services</h1>
       </div>
       <div style={styles.row}>
         {services.map((service, index) => (
@@ -37,6 +46,13 @@ const Threading = () => {
               <div style={styles.textWrapper}>
                 <h5 style={styles.cardTitle}>{service.title}</h5>
                 <p style={styles.price}>{service.price}</p>
+                <ul style={styles.description}>
+                  {service.description.map((item, i) => (
+                    <li key={i} style={styles.descriptionItem}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
                 <button style={styles.button}>Book Now</button>
               </div>
             </div>
@@ -118,7 +134,17 @@ const styles = {
     fontSize: "14px",
     fontWeight: "bold",
     color: "#E91E63",
-    marginBottom: "8px", // Tight gap between price and description
+    marginBottom: "0px", // Tight gap between price and description
+  },
+  description: {
+    listStyleType: "disc",
+    paddingLeft: "20px",
+    marginBottom: "8px", // Slightly reduced gap before the button
+  },
+  descriptionItem: {
+    fontSize: "14px",
+    color: "#777",
+    marginBottom: "0px", // Reduced spacing between list items
   },
   button: {
     backgroundColor: "#E91E63",
@@ -132,4 +158,4 @@ const styles = {
   },
 };
 
-export default Threading;
+export default HaircareMassage;
