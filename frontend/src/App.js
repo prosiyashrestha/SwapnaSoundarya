@@ -30,12 +30,13 @@ import LongLastingGelPolish from "./pages/LongLastingGelPolish";
 import NailExtension from "./pages/NailExtension";
 import GelRemove from "./pages/GelRemove";
 import Massage from "./pages/Massage";
+import LashesExtension from "./pages/LashesExtension";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <Massage />
+      <LashesExtension />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />
