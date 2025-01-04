@@ -49,7 +49,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center", // Center vertically
     alignItems: "center", // Center horizontally
-    backgroundColor: "#f8d7da",
+    backgroundColor: "#F9C2CD",
     height: "100vh",
     fontFamily: "'Arial', sans-serif",
     position: "relative",
@@ -67,7 +67,7 @@ const styles = {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#F7D1D8",
     borderRadius: "10px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
     width: "60%",
