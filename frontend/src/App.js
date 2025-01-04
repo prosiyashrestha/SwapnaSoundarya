@@ -21,12 +21,13 @@ import Threading from "./pages/Threading";
 import HaircareMassage from "./pages/Haircare&Massage";
 import HaircutAndStyle from "./pages/Haircut&Style";
 import HairSpa from "./pages/HairSpa";
+import Keratin from "./pages/Keratin";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <HairSpa />
+      <Threading />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />
