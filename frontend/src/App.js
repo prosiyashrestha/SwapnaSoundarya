@@ -29,12 +29,13 @@ import HairStyling from "./pages/HairStyling";
 import LongLastingGelPolish from "./pages/LongLastingGelPolish";
 import NailExtension from "./pages/NailExtension";
 import GelRemove from "./pages/GelRemove";
+import Massage from "./pages/Massage";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <GelRemove />
+      <Massage />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />
