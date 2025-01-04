@@ -24,12 +24,13 @@ import HairSpa from "./pages/HairSpa";
 import Keratin from "./pages/Keratin";
 import HairStraight from "./pages/HairStraight";
 import MakeupPackage from "./pages/MakeupPackage";
+import Makeup from "./pages/Makeup";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <MakeupPackage />
+      <Makeup />
       <Footer />
     </div>
     // <Route path="/login" element={<Login />} />
