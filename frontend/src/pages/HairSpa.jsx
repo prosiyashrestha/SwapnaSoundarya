@@ -1,29 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import BookingModal from "../components/BookingModal";
 
 const HairSpa = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   const services = [
     {
       title: "Hair Spa & Blowdry Styling",
+      category: "Female Hair Salon",
+      subCategory: "Hair Spa",
       price: "NRs 2000",
       description: ["Hair spa with blowdry styling included"],
       image: "Hair_Spa&Blowdry_Styling.jpg",
     },
     {
       title: "Hair Spa with Blowdry ",
+      category: "Female Hair Salon",
+      subCategory: "Hair Spa",
       price: "NRs 1500",
       description: [
-        "6 steps repair treatment to revive & straighthen damaged hair",
+        "6 steps repair treatment to revive & straighten damaged hair",
         "Steam therapy included",
       ],
       image: "HairSpawithBlowdry.jpg",
     },
     {
       title: "Head, Neck and Shoulder Massage",
+      category: "Female Hair Salon",
+      subCategory: "Hair Spa",
       price: "NRs 1000",
-      description: ["Speacially curated techniques to eliminate stress"],
+      description: ["Specially curated techniques to eliminate stress"],
       image: "Head_NeckandShoulder_Massage.jpg",
     },
   ];
+
+  const handleBookNow = (service) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) {
+      navigate("/login");
+    } else {
+      setUser(storedUser); // Set the logged-in user
+      setSelectedProduct(service);
+      setShowModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+  };
 
   return (
     <div style={styles.container}>
@@ -50,12 +79,25 @@ const HairSpa = () => {
                     </li>
                   ))}
                 </ul>
-                <button style={styles.button}>Book Now</button>
+                <button
+                  style={styles.button}
+                  onClick={() => handleBookNow(service)}
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {showModal && selectedProduct && user && (
+        <BookingModal
+          service={selectedProduct}
+          user={user}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
@@ -125,23 +167,23 @@ const styles = {
     fontSize: "18px",
     fontWeight: "bold",
     color: "#333",
-    marginBottom: "0px", // Tight gap between title and price
+    marginBottom: "0px",
   },
   price: {
     fontSize: "14px",
     fontWeight: "bold",
     color: "#E91E63",
-    marginBottom: "0px", // Tight gap between price and description
+    marginBottom: "8px",
   },
   description: {
     listStyleType: "disc",
     paddingLeft: "20px",
-    marginBottom: "8px", // Slightly reduced gap before the button
+    marginBottom: "8px",
   },
   descriptionItem: {
     fontSize: "14px",
     color: "#777",
-    marginBottom: "0px", // Reduced spacing between list items
+    marginBottom: "0px",
   },
   button: {
     backgroundColor: "#E91E63",
@@ -152,6 +194,89 @@ const styles = {
     cursor: "pointer",
     fontSize: "14px",
     alignSelf: "flex-start",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modal: {
+    backgroundColor: "#FFE5EA",
+    padding: "30px",
+    borderRadius: "10px",
+    textAlign: "center",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    width: "500px",
+  },
+  modalTitle: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  modalCard: {
+    textAlign: "left",
+  },
+  modalUser: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  modalDetail: {
+    fontSize: "16px",
+    fontWeight: "normal",
+    marginBottom: "10px",
+  },
+  paymentMethods: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    marginBottom: "20px",
+  },
+  paymentButton: {
+    backgroundColor: "#6ECC77",
+    color: "#000",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  paymentIcon: { width: "20px", height: "20px" },
+  locationDropdown: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginBottom: "20px",
+  },
+  buttonGroup: { display: "flex", justifyContent: "space-between" },
+  confirmButton: {
+    backgroundColor: "#6EC1E4",
+    color: "#000",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    cursor: "pointer",
+  },
+  cancelButton: {
+    backgroundColor: "#F38181",
+    color: "#000",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    cursor: "pointer",
   },
 };
 

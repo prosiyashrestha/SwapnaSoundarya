@@ -1,40 +1,91 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import Api from "../apis/Api"; // Adjust the path to where Api.js is located
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/authContext";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    if (!email || !password) {
+      setError("Email and password are required.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await Api.post("/users/login", { email, password });
+      setIsLoading(false);
+
+      if (response && response.data && response.data.success) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.userData));
+        setIsLoggedIn(true);
+        navigate("/");
+      } else {
+        setError(response.data?.message || "Login failed. Please try again.");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.error("Login error:", err);
+      setError("An error occurred. Please try again.");
+    }
+  };
+
   return (
     <div style={styles.pageContainer}>
-      {/* Logo Section */}
-      <div style={styles.logoContainer}>
-        <img src="logo.png" alt="Swapna Soundarya Logo" style={styles.logo} />
-      </div>
-
-      {/* Main Container */}
       <div style={styles.mainContainer}>
-        {/* Left Image Section */}
         <div style={styles.imageContainer}>
           <img src="login.jpg" alt="Wellness Service" style={styles.image} />
         </div>
 
-        {/* Right Form Section */}
         <div style={styles.formContainer}>
           <h2 style={styles.title}>Login</h2>
-          <div style={styles.tabContainer}>
-            <span style={styles.activeTab}>Login</span>
-            <span style={styles.separator}>|</span>
-            <span style={styles.inactiveTab}>Sign Up</span>
+          <div style={styles.tabs}>
+            <p style={{ ...styles.tab, fontWeight: "bold" }}>Login</p>
+            <span style={styles.divider}></span>
+            <Link to="/signup" style={styles.link}>
+              <p style={styles.tab}>Sign Up</p>
+            </Link>
           </div>
-          <form style={styles.form}>
-            <input type="email" placeholder="Email" style={styles.input} />
+          <form style={styles.form} onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              style={styles.input}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <input
               type="password"
               placeholder="Password"
               style={styles.input}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <a href="#forgot-password" style={styles.forgotPassword}>
-              Forgot Password?
-            </a>
-            <button type="submit" style={styles.loginButton}>
-              Login
+            {error && <p style={styles.error}>{error}</p>}
+            <button
+              type="submit"
+              style={styles.loginButton}
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
         </div>
@@ -47,20 +98,12 @@ const styles = {
   pageContainer: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center", // Center vertically
-    alignItems: "center", // Center horizontally
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#F9C2CD",
     height: "100vh",
     fontFamily: "'Arial', sans-serif",
     position: "relative",
-  },
-  logoContainer: {
-    position: "absolute",
-    top: "20px",
-    left: "20px",
-  },
-  logo: {
-    height: "170px",
   },
   mainContainer: {
     display: "flex",
@@ -99,26 +142,21 @@ const styles = {
     textAlign: "center",
     marginBottom: "20px",
   },
-  tabContainer: {
+  tabs: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
     marginBottom: "20px",
   },
-  activeTab: {
+  tab: {
     fontSize: "16px",
-    fontWeight: "bold",
-    color: "#000000",
-  },
-  inactiveTab: {
-    fontSize: "16px",
-    color: "#888888",
+    margin: "0 20px",
+    color: "#000",
     cursor: "pointer",
   },
-  separator: {
-    margin: "0 10px",
-    fontSize: "16px",
-    color: "#888888",
+  divider: {
+    height: "24px",
+    width: "1px",
+    backgroundColor: "#000",
   },
   form: {
     display: "flex",
@@ -131,11 +169,11 @@ const styles = {
     border: "1px solid #ccc",
     fontSize: "14px",
   },
-  forgotPassword: {
-    textAlign: "right",
-    fontSize: "12px",
-    color: "#900c3f",
-    textDecoration: "none",
+  error: {
+    color: "red",
+    fontSize: "14px",
+    textAlign: "center",
+    marginTop: "5px",
   },
   loginButton: {
     backgroundColor: "#900c3f",

@@ -1,32 +1,57 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Services = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   const venues = [
     {
       title: "Female Salon",
       services: "5 services",
       image: "female_salon.jpg",
+      route: "/femalesalon", // Route for navigation
     },
     {
       title: "Female Hair Salon",
       services: "4 services",
       image: "female_hair_salon.jpeg",
+      route: "/femalehairsalon", // Route for navigation
     },
-    { title: "MakeUp Studio", services: "3 services", image: "makeup.jpeg" },
-    { title: "Nail Art", services: "3 services", image: "nail_art.jpg" },
+    {
+      title: "MakeUp Studio",
+      services: "3 services",
+      image: "makeup.jpeg",
+      route: "/makeupstudio", // Route for navigation
+    },
+    {
+      title: "Nail Art",
+      services: "3 services",
+      image: "nail_art.jpg",
+      route: "/nailart", // Route for navigation
+    },
     {
       title: "Female Massage",
       services: "1 service",
       image: "female_massage.png",
+      route: "/femalemassage", // Route for navigation
     },
-    { title: "Lashes", services: "1 service", image: "lashes.jpg" },
+    {
+      title: "Lashes",
+      services: "1 service",
+      image: "lashes.jpg",
+      route: "/lashes", // Route for navigation
+    },
   ];
 
   return (
     <div style={styles.container}>
       <div style={styles.row}>
         {venues.map((venue, index) => (
-          <div style={styles.cardWrapper} key={index}>
+          <div
+            key={index}
+            style={styles.cardWrapper}
+            onClick={() => navigate(venue.route)} // Navigate to the route on click
+          >
             <div style={styles.card}>
               <div
                 style={{
@@ -67,6 +92,7 @@ const styles = {
     alignItems: "center",
     flexBasis: "calc(33.333% - 20px)", // For three cards per row
     maxWidth: "600px",
+    cursor: "pointer", // Adds pointer cursor to indicate clickability
   },
   card: {
     width: "190%",

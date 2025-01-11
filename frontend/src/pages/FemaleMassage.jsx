@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const FemaleMassage = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   const venues = [
     {
       title: "Massage",
       image: "Massage.jpg",
+      route: "/massage", // Route for navigation
     },
   ];
 
@@ -16,7 +20,11 @@ const FemaleMassage = () => {
       </div>
       <div style={styles.row}>
         {venues.map((venue, index) => (
-          <div style={styles.cardWrapper} key={index}>
+          <div
+            key={index}
+            style={styles.cardWrapper}
+            onClick={() => navigate(venue.route)} // Navigate to the route on click
+          >
             <div style={styles.card}>
               <div
                 style={{
@@ -26,7 +34,6 @@ const FemaleMassage = () => {
               ></div>
               <div style={styles.cardBody}>
                 <h5 style={styles.cardTitle}>{venue.title}</h5>
-                <p style={styles.cardText}>{venue.services}</p>
               </div>
             </div>
           </div>
@@ -74,6 +81,7 @@ const styles = {
     alignItems: "center",
     flexBasis: "calc(30% - 20px)", // Adjusts card width
     maxWidth: "600px",
+    cursor: "pointer", // Adds pointer cursor to indicate clickability
   },
   card: {
     width: "170%",
@@ -99,10 +107,6 @@ const styles = {
     fontWeight: "bold",
     color: "#333",
     marginBottom: "10px",
-  },
-  cardText: {
-    fontSize: "14px",
-    color: "#777",
   },
 };
 

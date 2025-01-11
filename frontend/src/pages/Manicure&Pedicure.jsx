@@ -1,26 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import BookingModal from "../components/BookingModal";
 
 const ManicurePedicure = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   const services = [
     {
       title: "Pedicure",
+      category: "Female Salon",
+      subCategory: "Manicure & Pedicure",
       price: "NRs 1500",
       description: ["Nourished legs", "Relaxing experience"],
+
       image: "pedicure.webp",
     },
     {
       title: "Manicure",
+      category: "Female Salon",
+      subCategory: "Manicure & Pedicure",
       price: "NRs 1200",
       description: ["Nourished hands", "Relaxing experience"],
+
       image: "manicure.jpg",
     },
     {
       title: "Manicure & Pedicure",
+      category: "Female Salon",
+      subCategory: "Manicure & Pedicure",
       price: "NRs 2500",
       description: ["Nourished hands and legs", "Relaxing experience"],
+
       image: "manicure&pedicure.jpg",
     },
   ];
+
+  const handleBookNow = (service) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) {
+      navigate("/login");
+    } else {
+      setUser(storedUser);
+      setSelectedProduct(service);
+      setShowModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+  };
 
   return (
     <div style={styles.container}>
@@ -47,12 +79,25 @@ const ManicurePedicure = () => {
                     </li>
                   ))}
                 </ul>
-                <button style={styles.button}>Book Now</button>
+                <button
+                  style={styles.button}
+                  onClick={() => handleBookNow(service)}
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {showModal && selectedProduct && user && (
+        <BookingModal
+          service={selectedProduct}
+          user={user}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
@@ -122,23 +167,23 @@ const styles = {
     fontSize: "18px",
     fontWeight: "bold",
     color: "#333",
-    marginBottom: "0px", // Tight gap between title and price
+    marginBottom: "0px",
   },
   price: {
     fontSize: "14px",
     fontWeight: "bold",
     color: "#E91E63",
-    marginBottom: "0px", // Tight gap between price and description
+    marginBottom: "0px",
   },
   description: {
     listStyleType: "disc",
     paddingLeft: "20px",
-    marginBottom: "8px", // Slightly reduced gap before the button
+    marginBottom: "8px",
   },
   descriptionItem: {
     fontSize: "14px",
     color: "#777",
-    marginBottom: "0px", // Reduced spacing between list items
+    marginBottom: "0px",
   },
   button: {
     backgroundColor: "#E91E63",
@@ -149,6 +194,99 @@ const styles = {
     cursor: "pointer",
     fontSize: "14px",
     alignSelf: "flex-start",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modal: {
+    backgroundColor: "#FFE5EA",
+    padding: "20px",
+    borderRadius: "10px",
+    textAlign: "center",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+    maxWidth: "600px",
+    width: "100%",
+  },
+  modalTitle: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  modalCard: {
+    backgroundColor: "#F5E5E7",
+    borderRadius: "10px",
+    padding: "20px",
+    textAlign: "left",
+  },
+  modalUser: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  modalDetail: {
+    fontSize: "16px",
+    marginBottom: "10px",
+  },
+  paymentMethods: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+    marginBottom: "20px",
+  },
+  paymentButton: {
+    backgroundColor: "#6ECC77",
+    color: "#000",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  paymentIcon: {
+    width: "20px",
+    height: "20px",
+  },
+  locationDropdown: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginBottom: "20px",
+  },
+  buttonGroup: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "10px",
+  },
+  confirmButton: {
+    backgroundColor: "#6EC1E4",
+    color: "#000",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    cursor: "pointer",
+  },
+  cancelButton: {
+    backgroundColor: "#F38181",
+    color: "#000",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    cursor: "pointer",
   },
 };
 

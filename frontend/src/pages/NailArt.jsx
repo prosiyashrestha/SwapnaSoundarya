@@ -1,16 +1,25 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const NailArt = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   const venues = [
     {
       title: "Long Lasting Gel Polish",
       image: "Long_Lasting_Gel_Polish.webp",
+      route: "/longlastinggelpolish", // Route for navigation
     },
     {
       title: "Nail Extension",
       image: "Nail_Extension.webp",
+      route: "/nailextension", // Route for navigation
     },
-    { title: "Gel Remove", image: "Gel_Remove.jpg" },
+    {
+      title: "Gel Remove",
+      image: "Gel_Remove.jpg",
+      route: "/gelremove", // Route for navigation
+    },
   ];
 
   return (
@@ -21,7 +30,11 @@ const NailArt = () => {
       </div>
       <div style={styles.row}>
         {venues.map((venue, index) => (
-          <div style={styles.cardWrapper} key={index}>
+          <div
+            key={index}
+            style={styles.cardWrapper}
+            onClick={() => navigate(venue.route)} // Navigate to the route on click
+          >
             <div style={styles.card}>
               <div
                 style={{
@@ -31,7 +44,6 @@ const NailArt = () => {
               ></div>
               <div style={styles.cardBody}>
                 <h5 style={styles.cardTitle}>{venue.title}</h5>
-                <p style={styles.cardText}>{venue.services}</p>
               </div>
             </div>
           </div>
@@ -79,6 +91,7 @@ const styles = {
     alignItems: "center",
     flexBasis: "calc(30% - 20px)", // Adjusts card width
     maxWidth: "600px",
+    cursor: "pointer", // Adds pointer cursor to indicate clickability
   },
   card: {
     width: "170%",
@@ -104,10 +117,6 @@ const styles = {
     fontWeight: "bold",
     color: "#333",
     marginBottom: "10px",
-  },
-  cardText: {
-    fontSize: "14px",
-    color: "#777",
   },
 };
 

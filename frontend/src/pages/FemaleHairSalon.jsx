@@ -1,17 +1,30 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const FemaleHairSalon = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   const venues = [
     {
       title: "Haircut & Style",
       image: "Haircut&Style.jpg",
+      route: "/haircutstyle", // Route to navigate
     },
     {
       title: "Hair Spa",
       image: "Hair_Spa.jpg",
+      route: "/hairspa", // Route to navigate
     },
-    { title: "Keratin", image: "Keratin.jpeg" },
-    { title: "Hair Straight", image: "Hair_Straight.jpg" },
+    {
+      title: "Keratin",
+      image: "Keratin.jpeg",
+      route: "/keratin", // Route to navigate
+    },
+    {
+      title: "Hair Straight",
+      image: "Hair_Straight.jpg",
+      route: "/hairstraight", // Route to navigate
+    },
   ];
 
   return (
@@ -22,7 +35,11 @@ const FemaleHairSalon = () => {
       </div>
       <div style={styles.row}>
         {venues.map((venue, index) => (
-          <div style={styles.cardWrapper} key={index}>
+          <div
+            style={styles.cardWrapper}
+            key={index}
+            onClick={() => navigate(venue.route)} // Navigate to the route on click
+          >
             <div style={styles.card}>
               <div
                 style={{
@@ -32,7 +49,6 @@ const FemaleHairSalon = () => {
               ></div>
               <div style={styles.cardBody}>
                 <h5 style={styles.cardTitle}>{venue.title}</h5>
-                <p style={styles.cardText}>{venue.services}</p>
               </div>
             </div>
           </div>
@@ -80,6 +96,7 @@ const styles = {
     alignItems: "center",
     flexBasis: "calc(30% - 20px)", // Adjusts card width
     maxWidth: "600px",
+    cursor: "pointer", // Adds pointer cursor to indicate clickability
   },
   card: {
     width: "170%",
@@ -105,10 +122,6 @@ const styles = {
     fontWeight: "bold",
     color: "#333",
     marginBottom: "10px",
-  },
-  cardText: {
-    fontSize: "14px",
-    color: "#777",
   },
 };
 

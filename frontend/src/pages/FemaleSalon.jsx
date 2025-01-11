@@ -1,20 +1,34 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const FemaleSalon = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   const venues = [
     {
       title: "Wax",
       image: "wax.jpg",
+      route: "/wax",
     },
     {
       title: "Manicure & Pedicure",
       image: "manicure_pedicure.webp",
+      route: "/manipedi",
     },
-    { title: "Facial & Clean Up", image: "facial_and_cleanup.webp" },
-    { title: "Threading", image: "threading.webp" },
+    {
+      title: "Facial & Clean Up",
+      image: "facial_and_cleanup.webp",
+      route: "/facialcleanup",
+    },
+    {
+      title: "Threading",
+      image: "threading.webp",
+      route: "/threading",
+    },
     {
       title: "Haircare Massage",
       image: "haircare_and_massage.webp",
+      route: "/haircaremassage",
     },
   ];
 
@@ -26,7 +40,11 @@ const FemaleSalon = () => {
       </div>
       <div style={styles.row}>
         {venues.map((venue, index) => (
-          <div style={styles.cardWrapper} key={index}>
+          <div
+            key={index}
+            style={styles.cardWrapper}
+            onClick={() => navigate(venue.route)} // Navigate to the route on click
+          >
             <div style={styles.card}>
               <div
                 style={{
@@ -36,7 +54,6 @@ const FemaleSalon = () => {
               ></div>
               <div style={styles.cardBody}>
                 <h5 style={styles.cardTitle}>{venue.title}</h5>
-                <p style={styles.cardText}>{venue.services}</p>
               </div>
             </div>
           </div>
@@ -84,6 +101,7 @@ const styles = {
     alignItems: "center",
     flexBasis: "calc(30% - 20px)", // Adjusts card width
     maxWidth: "600px",
+    cursor: "pointer", // Adds pointer cursor to indicate clickability
   },
   card: {
     width: "170%",
@@ -109,10 +127,6 @@ const styles = {
     fontWeight: "bold",
     color: "#333",
     marginBottom: "10px",
-  },
-  cardText: {
-    fontSize: "14px",
-    color: "#777",
   },
 };
 

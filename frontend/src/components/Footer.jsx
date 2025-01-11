@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -13,7 +14,10 @@ const Footer = () => {
       <div style={styles.stayInTouch}>
         <h3 style={styles.title}>STAY IN TOUCH</h3>
         <p style={styles.feedbackText}>Give us your feedback</p>
+        <Link to="/feedback" style={styles.link}>
         <button style={styles.feedbackButton}>CLICK HERE</button>
+        </Link>
+        
       </div>
 
       {/* Contact Us Section */}

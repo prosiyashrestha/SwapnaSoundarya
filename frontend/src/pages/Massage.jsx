@@ -1,26 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import BookingModal from "../components/BookingModal";
 
 const Massage = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   const services = [
     {
       title: "60 min Massage",
+      category: "Female Massage",
+      subCategory: "Massage",
       price: "NRs 2500",
       description: [
         "High pressure full body massage",
-        "Treats deeper muscle layers, heats sport injuries & improves flexibility",
+        "Treats deeper muscle layers, heals sport injuries & improves flexibility",
       ],
       image: "Massage.jpg",
     },
     {
       title: "90 min Massage",
+      category: "Female Massage",
+      subCategory: "Massage",
       price: "NRs 3500",
       description: [
         "High pressure full body massage",
-        "Treats deeper muscle layers, heats sport injuries & improves flexibility",
+        "Treats deeper muscle layers, heals sport injuries & improves flexibility",
       ],
       image: "Massage.jpg",
     },
   ];
+
+  const handleBookNow = (service) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) {
+      navigate("/login");
+    } else {
+      setUser(storedUser);
+      setSelectedProduct(service);
+      setShowModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+  };
 
   return (
     <div style={styles.container}>
@@ -47,12 +74,25 @@ const Massage = () => {
                     </li>
                   ))}
                 </ul>
-                <button style={styles.button}>Book Now</button>
+                <button
+                  style={styles.button}
+                  onClick={() => handleBookNow(service)}
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {showModal && selectedProduct && user && (
+        <BookingModal
+          service={selectedProduct}
+          user={user}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
@@ -122,23 +162,23 @@ const styles = {
     fontSize: "18px",
     fontWeight: "bold",
     color: "#333",
-    marginBottom: "0px", // Tight gap between title and price
+    marginBottom: "0px",
   },
   price: {
     fontSize: "14px",
     fontWeight: "bold",
     color: "#E91E63",
-    marginBottom: "0px", // Tight gap between price and description
+    marginBottom: "8px",
   },
   description: {
     listStyleType: "disc",
     paddingLeft: "20px",
-    marginBottom: "8px", // Slightly reduced gap before the button
+    marginBottom: "8px",
   },
   descriptionItem: {
     fontSize: "14px",
     color: "#777",
-    marginBottom: "0px", // Reduced spacing between list items
+    marginBottom: "0px",
   },
   button: {
     backgroundColor: "#E91E63",

@@ -1,18 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import BookingModal from "../components/BookingModal";
 
 const NailExtension = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   const services = [
     {
       title: "Gel Nail Extension",
+      category: "Nail Art",
+      subCategory: "Nail Extension",
       price: "NRs 2400",
+      description: [
+        "Durable gel-based nail extension for long-lasting beauty",
+        "Customizable designs and styles",
+      ],
       image: "GelNailExtension.png",
     },
     {
       title: "Toe Nail Extension",
+      category: "Nail Art",
+      subCategory: "Nail Extension",
       price: "NRs 2500",
+      description: [
+        "Enhance toe nails with professional extensions",
+        "Perfect for all occasions",
+      ],
       image: "ToeNailExtension.jpeg",
     },
   ];
+
+  const handleBookNow = (service) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) {
+      navigate("/login");
+    } else {
+      setUser(storedUser);
+      setSelectedProduct(service);
+      setShowModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+  };
 
   return (
     <div style={styles.container}>
@@ -32,12 +67,32 @@ const NailExtension = () => {
               <div style={styles.textWrapper}>
                 <h5 style={styles.cardTitle}>{service.title}</h5>
                 <p style={styles.price}>{service.price}</p>
-                <button style={styles.button}>Book Now</button>
+                <ul style={styles.description}>
+                  {service.description.map((item, i) => (
+                    <li key={i} style={styles.descriptionItem}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  style={styles.button}
+                  onClick={() => handleBookNow(service)}
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {showModal && selectedProduct && user && (
+        <BookingModal
+          service={selectedProduct}
+          user={user}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
@@ -107,13 +162,23 @@ const styles = {
     fontSize: "18px",
     fontWeight: "bold",
     color: "#333",
-    marginBottom: "0px", // Tight gap between title and price
+    marginBottom: "0px",
   },
   price: {
     fontSize: "14px",
     fontWeight: "bold",
     color: "#E91E63",
-    marginBottom: "8px", // Tight gap between price and description
+    marginBottom: "8px",
+  },
+  description: {
+    listStyleType: "disc",
+    paddingLeft: "20px",
+    marginBottom: "8px",
+  },
+  descriptionItem: {
+    fontSize: "14px",
+    color: "#777",
+    marginBottom: "0px",
   },
   button: {
     backgroundColor: "#E91E63",

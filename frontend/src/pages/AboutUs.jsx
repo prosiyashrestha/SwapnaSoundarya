@@ -8,7 +8,7 @@ const AboutUs = () => {
         <div style={styles.imageContainer}>
           <img src="aboutus1.jpg" alt="Hair Styling" style={styles.imageLeft} />
           <img
-            src="aboutus2.png"
+            src="aboutus2.webp"
             alt="Facial Treatment"
             style={styles.imageRight}
           />
@@ -46,7 +46,6 @@ const styles = {
   aboutUsSection: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "auto", // Ensures the text and image sections are of equal height
     alignItems: "center",
     justifyContent: "center",
     gap: "40px",
@@ -54,10 +53,10 @@ const styles = {
   },
   imageContainer: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row", // Horizontal alignment of images
     alignItems: "center",
+    justifyContent: "center",
     gap: "20px",
-    justifySelf: "center",
   },
   imageLeft: {
     width: "250px",
@@ -65,7 +64,7 @@ const styles = {
     objectFit: "cover",
     borderRadius: "10px",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    marginLeft: "auto",
+    marginBottom: "0px",
   },
   imageRight: {
     width: "250px",
@@ -73,7 +72,7 @@ const styles = {
     objectFit: "cover",
     borderRadius: "10px",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    marginRight: "auto",
+    marginTop: "100px",
   },
   textContainer: {
     textAlign: "center",
@@ -85,6 +84,7 @@ const styles = {
     fontWeight: "bold",
     color: "#000",
     marginBottom: "10px",
+    marginTop: "-20px", // Adjusted to place the title higher
   },
   subtitle: {
     fontSize: "20px",
@@ -100,8 +100,8 @@ const styles = {
   },
   footerText: {
     fontSize: "16px",
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: "normal", // Removed bold styling
+    color: "#333",
     marginTop: "20px",
   },
 };
