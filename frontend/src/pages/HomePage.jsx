@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -17,6 +18,30 @@ const HomePage = () => {
         Make your skin’s wellness a priority and let your natural glow shine
         with a tailored skincare ritual.
       </p>
+
+      {/* Booking Steps Section */}
+      <section style={styles.stepsSection}>
+        <h2 style={styles.stepsTitle}>How to book our Services</h2>
+        <div style={styles.steps}>
+          <p>01 Create your account</p>
+          <p>02 Choose your services</p>
+          <p>03 Input your address</p>
+          <p>04 Book Service</p>
+        </div>
+        <Link to="/services">
+          <button style={styles.getStartedButton}>Get Started</button>
+        </Link>
+      </section>
+
+      {/* Feedback Section */}
+      <section style={styles.feedbackSection}>
+        <h2 style={styles.feedbackTitle}>View Feedbacks of our Services</h2>
+        <div style={styles.feedbackCards}>
+          <div style={styles.feedbackCard}>Rani Rai</div>
+          <div style={styles.feedbackCard}>Rani Rai</div>
+          <div style={styles.feedbackCard}>Rani Rai</div>
+        </div>
+      </section>
     </div>
   );
 };
@@ -39,32 +64,82 @@ const styles = {
   heroGif: {
     width: "100%",
     height: "auto",
-    maxHeight: "600px", // Increased height for the GIF
+    maxHeight: "600px",
     objectFit: "cover",
     borderRadius: "10px",
   },
   heroText: {
-    position: "absolute", // Text overlay on the GIF
-    top: "60%", // Lowered the position of the title and subtitle
+    position: "absolute",
+    top: "60%",
     transform: "translateY(-50%)",
     color: "#fff",
     textShadow: "0px 2px 4px rgba(0,0,0,0.8)",
   },
   title: {
-    fontSize: "48px", // Bigger font size for the title
-    fontWeight: "bold", // Bold styling
-    marginBottom: "10px", // Added spacing between title and subtitle
+    fontSize: "48px",
+    fontWeight: "bold",
+    marginBottom: "10px",
   },
   subtitle: {
-    fontSize: "28px", // Bigger font size for the subtitle
-    fontWeight: "bold", // Bold styling
+    fontSize: "28px",
+    fontWeight: "bold",
   },
   description: {
-    fontSize: "20px", // Bigger font size for the description
-    fontWeight: "bold", // Bold styling
-    marginTop: "20px", // Added spacing above the description
-    padding: "0 20px", // Padding for better readability on smaller screens
-    lineHeight: "1.8", // Improved line spacing for larger text
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginTop: "20px",
+    padding: "0 20px",
+    lineHeight: "1.8",
+  },
+  stepsSection: {
+    backgroundColor: "#f8d7da",
+    padding: "20px",
+    borderRadius: "10px",
+    margin: "20px",
+  },
+  stepsTitle: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  steps: {
+    display: "flex",
+    justifyContent: "space-around",
+    marginBottom: "20px",
+    fontWeight: "bold",
+  },
+  getStartedButton: {
+    backgroundColor: "#fff",
+    color: "#000",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    border: "1px solid #000",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  feedbackSection: {
+    backgroundColor: "#f8d7da",
+    padding: "20px",
+    borderRadius: "10px",
+    margin: "20px",
+  },
+  feedbackTitle: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  feedbackCards: {
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  feedbackCard: {
+    backgroundColor: "#ffdce1",
+    padding: "20px",
+    borderRadius: "5px",
+    boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
+    width: "150px",
+    textAlign: "center",
+    fontWeight: "bold",
   },
 };
 

@@ -15,9 +15,8 @@ const Footer = () => {
         <h3 style={styles.title}>STAY IN TOUCH</h3>
         <p style={styles.feedbackText}>Give us your feedback</p>
         <Link to="/feedback" style={styles.link}>
-        <button style={styles.feedbackButton}>CLICK HERE</button>
+          <button style={styles.feedbackButton}>CLICK HERE</button>
         </Link>
-        
       </div>
 
       {/* Contact Us Section */}
@@ -33,7 +32,27 @@ const Footer = () => {
       <div style={styles.socialSection}>
         <h3 style={styles.title}>Find us on socials</h3>
         <div style={styles.iconsContainer}>
-          <img src="socials.png" alt="Socials" style={styles.icon} />
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="insta.png" alt="Instagram" style={styles.icon} />
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="fb.png" alt="Facebook" style={styles.icon} />
+          </a>
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="twitter.png" alt="Twitter" style={styles.icon} />
+          </a>
         </div>
       </div>
     </footer>
@@ -103,12 +122,13 @@ const styles = {
   iconsContainer: {
     display: "flex",
     justifyContent: "center",
-    gap: "10px",
+    gap: "15px", // Adjusted spacing between icons
     marginTop: "10px",
   },
   icon: {
-    width: "190px",
-    height: "80px",
+    width: "50px", // Decreased width
+    height: "50px", // Decreased height
+    cursor: "pointer",
   },
 };
 
