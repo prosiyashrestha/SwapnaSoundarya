@@ -35,8 +35,6 @@ app.use("/api/provider", require("./routes/providerRoutes"));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
 app.use("/api/feedback", require("./routes/feedbackRoutes"));
 
-// app.use('/api/provider', require('./routes/providerRoutes'))
-
 // defining port
 const PORT = process.env.PORT;
 
