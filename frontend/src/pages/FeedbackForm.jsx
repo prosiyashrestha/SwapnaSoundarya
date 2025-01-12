@@ -1,17 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
+import { saveFeedback } from "../apis/Api"; // Assuming you have a saveFeedback API function
 
 const FeedbackForm = () => {
+  const [feedback, setFeedback] = useState("");
+  const [error, setError] = useState(null);
+
+  const onSaveFeedback = async (feedbackData) => {
+    try {
+      await saveFeedback(feedbackData);
+      alert("Feedback submitted successfully!");
+      setFeedback("");
+      setError(null);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      setError("Failed to submit feedback. Please try again.");
+    }
+  };
+
+  const handleSave = () => {
+    if (!feedback.trim()) {
+      setError("Feedback cannot be empty.");
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const feedbackData = {
+      username: user?.firstName || "Anonymous",
+      feedback,
+    };
+
+    onSaveFeedback(feedbackData);
+  };
+
+  const handleCancel = () => {
+    window.location.href = "/";
+  };
+
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Leave a feedback</h1>
+      <h1 style={styles.title}>Leave a Feedback</h1>
       <div style={styles.card}>
         <textarea
           style={styles.textarea}
-          placeholder="Type here ..."
+          placeholder="Type your feedback here..."
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
         ></textarea>
+        {error && <p style={styles.errorText}>{error}</p>}
         <div style={styles.buttonContainer}>
-          <button style={styles.saveButton}>Save</button>
-          <button style={styles.cancelButton}>Cancel</button>
+          <button style={styles.saveButton} onClick={handleSave}>
+            Save
+          </button>
+          <button style={styles.cancelButton} onClick={handleCancel}>
+            Cancel
+          </button>
         </div>
       </div>
     </div>
@@ -76,6 +118,11 @@ const styles = {
     fontSize: "14px",
     fontWeight: "bold",
     cursor: "pointer",
+  },
+  errorText: {
+    color: "red",
+    fontSize: "14px",
+    marginBottom: "10px",
   },
 };
 

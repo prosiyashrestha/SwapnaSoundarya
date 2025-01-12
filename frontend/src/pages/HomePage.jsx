@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchFeedbacks } from "../apis/Api";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
+  const [feedbackList, setFeedbackList] = useState([]);
+
+  useEffect(() => {
+    // Fetch feedbacks from the backend when the component loads
+    const fetchAllFeedbacks = async () => {
+      try {
+        const feedbacks = await fetchFeedbacks(); // Fetch all feedbacks
+        setFeedbackList(feedbacks);
+      } catch (error) {
+        console.error("Error fetching feedbacks:", error);
+      }
+    };
+
+    fetchAllFeedbacks();
+  }, []);
+
   return (
     <div style={styles.container}>
       {/* Hero Section */}
@@ -37,9 +54,12 @@ const HomePage = () => {
       <section style={styles.feedbackSection}>
         <h2 style={styles.feedbackTitle}>View Feedbacks of our Services</h2>
         <div style={styles.feedbackCards}>
-          <div style={styles.feedbackCard}>Rani Rai</div>
-          <div style={styles.feedbackCard}>Rani Rai</div>
-          <div style={styles.feedbackCard}>Rani Rai</div>
+          {feedbackList.map((item, index) => (
+            <div key={index} style={styles.feedbackCard}>
+              <h3 style={styles.feedbackUsername}>{item.username}</h3>
+              <p style={styles.feedbackText}>{item.feedback}</p>
+            </div>
+          ))}
         </div>
       </section>
     </div>
@@ -130,16 +150,26 @@ const styles = {
   },
   feedbackCards: {
     display: "flex",
-    justifyContent: "space-around",
+    gap: "20px",
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   feedbackCard: {
     backgroundColor: "#ffdce1",
     padding: "20px",
     borderRadius: "5px",
     boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
-    width: "150px",
+    width: "250px",
     textAlign: "center",
+  },
+  feedbackUsername: {
+    fontSize: "18px",
     fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  feedbackText: {
+    fontSize: "14px",
+    color: "#555",
   },
 };
 
