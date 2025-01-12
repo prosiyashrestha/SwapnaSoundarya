@@ -1,20 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { changePassword } from "../apis/Api";
 
 const ChangePassword = () => {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setError("New password and confirm password do not match.");
+      return;
+    }
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.email) {
+        setError("User is not logged in.");
+        return;
+      }
+
+      const payload = {
+        email: user.email,
+        currentPassword,
+        newPassword,
+      };
+
+      const response = await changePassword(payload);
+      alert(response.message || "Password changed successfully!");
+      setError(null);
+      navigate("/");
+    } catch (err) {
+      console.error("Error changing password:", err);
+      setError(
+        err.response?.data?.error ||
+          "Failed to change password. Please try again."
+      );
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/");
+  };
+
   return (
     <div style={styles.pageContainer}>
-      {/* Title */}
       <h1 style={styles.title}>Change Password</h1>
-
-      {/* Card */}
       <div style={styles.card}>
-        <form style={styles.form}>
+        <form style={styles.form} onSubmit={handleSubmit}>
           <div style={styles.inputGroup}>
             <label style={styles.label}>Current Password</label>
             <input
               type="password"
               placeholder="Enter your current password"
               style={styles.input}
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
             />
           </div>
           <div style={styles.inputGroup}>
@@ -23,6 +69,9 @@ const ChangePassword = () => {
               type="password"
               placeholder="Enter your new password"
               style={styles.input}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
             />
           </div>
           <div style={styles.inputGroup}>
@@ -31,13 +80,21 @@ const ChangePassword = () => {
               type="password"
               placeholder="Confirm your new password"
               style={styles.input}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             />
           </div>
+          {error && <p style={styles.errorText}>{error}</p>}
           <div style={styles.buttonGroup}>
             <button type="submit" style={styles.confirmButton}>
-              Confirm
+              Save
             </button>
-            <button type="button" style={styles.cancelButton}>
+            <button
+              type="button"
+              style={styles.cancelButton}
+              onClick={handleCancel}
+            >
               Cancel
             </button>
           </div>
@@ -62,7 +119,7 @@ const styles = {
     fontSize: "36px",
     fontWeight: "bold",
     color: "#333",
-    marginBottom: "10px", // Reduced margin to lessen the gap
+    marginBottom: "10px",
   },
   card: {
     backgroundColor: "#FFE5EA",
@@ -120,6 +177,11 @@ const styles = {
     borderRadius: "10px",
     color: "#fff",
     cursor: "pointer",
+  },
+  errorText: {
+    color: "red",
+    fontSize: "14px",
+    marginBottom: "10px",
   },
 };
 
