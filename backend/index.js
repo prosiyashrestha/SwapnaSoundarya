@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const connectDB = require("./database/db");
 const cors = require("cors");
 const multiparty = require("connect-multiparty");
+// const feedbackRoutes = require("./routes/feedbackRoutes");
 
 // Making express app
 
@@ -32,6 +33,7 @@ app.use(multiparty());
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/provider", require("./routes/providerRoutes"));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
+app.use("/api/feedback", require("./routes/feedbackRoutes"));
 
 // app.use('/api/provider', require('./routes/providerRoutes'))
 
