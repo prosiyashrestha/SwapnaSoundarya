@@ -13,10 +13,18 @@ const EditProfile = () => {
         </div>
         <form style={styles.form}>
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Full name</label>
+            <label style={styles.label}>First name</label>
             <input
               type="text"
-              placeholder="Enter your full name"
+              placeholder="Enter your first name"
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Last name</label>
+            <input
+              type="text"
+              placeholder="Enter your last name"
               style={styles.input}
             />
           </div>

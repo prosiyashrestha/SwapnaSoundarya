@@ -14,12 +14,12 @@ import Services from "./pages/Services";
 import AboutUs from "./pages/AboutUs";
 import Faqs from "./pages/Faqs";
 import BeOurBeautician from "./pages/BeOurBeautician";
-import UserProfile from "./pages/UserProfile";
 import EditProfile from "./pages/EditProfile";
 import ChangePassword from "./pages/ChangePassword";
 import ProviderHome from "./pages/Provider/ProviderHome";
 import MyBookings from "./pages/MyBookings";
 import AllBookings from "./pages/AllBookings";
+import Profile from "./pages/Profile";
 
 // Female Salon Pages
 import FemaleSalon from "./pages/FemaleSalon";
@@ -51,6 +51,7 @@ import FemaleMassage from "./pages/FemaleMassage";
 import Massage from "./pages/Massage";
 import Lashes from "./pages/Lashes";
 import LashesExtension from "./pages/LashesExtension";
+
 
 const App = () => {
   return (
@@ -103,7 +104,7 @@ const App = () => {
         <Route path="/lashesextension" element={<LashesExtension />} />
 
         {/* Protected Routes */}
-        <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/providerhome" element={<ProviderHome />} />

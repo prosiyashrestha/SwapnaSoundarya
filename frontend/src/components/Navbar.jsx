@@ -79,7 +79,7 @@ const Navbar = () => {
                 <div style={styles.dropdown}>
                   {isLoggedIn ? (
                     <>
-                      <Link to="/userprofile" style={styles.dropdownItem}>
+                      <Link to="/profile" style={styles.dropdownItem}>
                         Profile
                       </Link>
                       <hr style={styles.divider} />
@@ -115,7 +115,7 @@ const Navbar = () => {
             <Link to="/allbookings" style={styles.navItem}>
               Service Requests
             </Link>
-            <Link to="/userprofile" style={styles.navItem}>
+            <Link to="/profile" style={styles.navItem}>
               Profile
             </Link>
             <div style={styles.navItem} onClick={handleLogout}>
