@@ -52,7 +52,6 @@ import Massage from "./pages/Massage";
 import Lashes from "./pages/Lashes";
 import LashesExtension from "./pages/LashesExtension";
 
-
 const App = () => {
   return (
     <AuthProvider>
@@ -62,7 +61,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/services" element={<Services />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/faqs" element={<Faqs />} />
@@ -72,12 +71,12 @@ const App = () => {
         {/* Female Salon Routes */}
         <Route path="/femalesalon" element={<FemaleSalon />} />
         <Route path="/wax" element={<Wax />} />
-        <Route path="/manicure-pedicure" element={<ManicurePedicure />} />
-        <Route path="/facial-cleanup" element={<FacialCleanup />} />
+        <Route path="/manipedi" element={<ManicurePedicure />} />
+        <Route path="/facialcleanup" element={<FacialCleanup />} />
         <Route path="/threading" element={<Threading />} />
-        <Route path="/haircare-massage" element={<HaircareMassage />} />
+        <Route path="/haircaremassage" element={<HaircareMassage />} />
         <Route path="/femalehairsalon" element={<FemaleHairSalon />} />
-        <Route path="/haircut-style" element={<HaircutAndStyle />} />
+        <Route path="/haircutstyle" element={<HaircutAndStyle />} />
         <Route path="/hairspa" element={<HairSpa />} />
         <Route path="/keratin" element={<Keratin />} />
         <Route path="/hairstraight" element={<HairStraight />} />

@@ -79,6 +79,11 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <div style={styles.forgotPasswordContainer}>
+              <Link to="/forgotpassword" style={styles.forgotPassword}>
+                Forgot Password?
+              </Link>
+            </div>
             {error && <p style={styles.error}>{error}</p>}
             <button
               type="submit"
@@ -168,6 +173,18 @@ const styles = {
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "14px",
+  },
+  forgotPasswordContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: "-10px", // Adjust spacing as needed
+    marginBottom: "10px",
+  },
+  forgotPassword: {
+    color: "#000",
+    fontSize: "14px",
+    textDecoration: "none",
+    cursor: "pointer",
   },
   error: {
     color: "red",

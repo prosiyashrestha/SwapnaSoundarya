@@ -23,7 +23,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    height: "70vh",
     backgroundColor: "#F7C5CF",
     fontFamily: "'Arial', sans-serif",
   },
@@ -47,7 +47,7 @@ const styles = {
     marginBottom: "15px",
   },
   input: {
-    width: "100%",
+    width: "90%",
     padding: "12px",
     borderRadius: "5px",
     border: "1px solid #ccc",
