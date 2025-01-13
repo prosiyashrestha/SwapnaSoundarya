@@ -83,7 +83,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F7C5CF",
-    height: "90vh",
+    height: "100vh",
     fontFamily: "'Arial', sans-serif",
   },
   titleContainer: {

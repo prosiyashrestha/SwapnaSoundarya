@@ -8,9 +8,9 @@ const AllBookings = () => {
 
   const handleUpdateStatus = async (bookingId, status) => {
     try {
-      const acceptedBy = JSON.parse(localStorage.getItem("user"))?.email;
+      const acceptedBy = JSON.parse(localStorage.getItem("user"))?.id;
       await Api.put(`/bookings/${bookingId}`, { status, acceptedBy });
-      fetchBookings(); // Refresh bookings
+      fetchBookings(); // Refresh bookings after status update
     } catch (error) {
       console.error("Error updating booking status:", error);
     }
@@ -19,11 +19,11 @@ const AllBookings = () => {
   const fetchBookings = async () => {
     try {
       const response = await Api.get(`/bookings/all`);
-      setBookings(response.data); // Fetch all bookings with user data
-      setLoading(false);
+      setBookings(response.data);
     } catch (error) {
       console.error("Error fetching bookings:", error);
       alert("Failed to fetch bookings. Please try again later.");
+    } finally {
       setLoading(false);
     }
   };
@@ -34,11 +34,15 @@ const AllBookings = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Booking Requests</h1>
+      <h1 style={styles.title}>All Bookings</h1>
       {loading ? (
-        <p style={styles.loadingText}>Loading your bookings...</p>
+        <p style={styles.loadingText}>Loading booking requests...</p>
       ) : (
-        <BookingList bookings={bookings} onUpdateStatus={handleUpdateStatus} />
+        <BookingList
+          bookings={bookings}
+          onUpdateStatus={handleUpdateStatus}
+          isProvider={true}
+        />
       )}
     </div>
   );
