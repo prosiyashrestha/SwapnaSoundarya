@@ -4,6 +4,8 @@ import axios from "axios";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fetch user data from local storage and server
@@ -16,17 +18,30 @@ const Profile = () => {
             `http://localhost:5500/api/users/getSingleUser/${loggedInUser.id}`
           );
           setUser(response.data.user);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+          setError(null);
+        } catch (err) {
+          console.error("Error fetching user data:", err);
+          setError("Failed to fetch user data.");
         }
+      } else {
+        setError("No user is logged in.");
       }
+      setLoading(false);
     };
 
     fetchUserData();
   }, []);
 
+  if (loading) {
+    return <p style={styles.loadingText}>Loading...</p>;
+  }
+
+  if (error) {
+    return <p style={styles.errorText}>{error}</p>;
+  }
+
   if (!user) {
-    return <p>Loading...</p>;
+    return <p style={styles.errorText}>User not found.</p>;
   }
 
   return (
@@ -38,9 +53,7 @@ const Profile = () => {
         <div style={styles.profileImageContainer}>
           <img
             src={
-              user.photo && user.photo !== ""
-                ? `http://localhost:5500/uploads/${user.photo}`
-                : "user.png"
+              user.photo ? `http://localhost:5500/${user.photo}` : "user.png"
             }
             alt="Profile"
             style={styles.profileImage}
@@ -124,6 +137,14 @@ const styles = {
     fontWeight: "bold",
     color: "#000",
     marginBottom: "15px",
+  },
+  loadingText: {
+    fontSize: "18px",
+    color: "#555",
+  },
+  errorText: {
+    fontSize: "16px",
+    color: "red",
   },
 };
 
