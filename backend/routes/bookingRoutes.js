@@ -6,9 +6,12 @@ const BookingController = require("../controllers/bookingControllers");
 router.post("/book", BookingController.createBooking);
 
 // Route to get all bookings for a user
-router.get("/user/:email", BookingController.getUserBookings);
+router.get("/user/:userId", BookingController.getUserBookings);
 
+// Route to get all bookings
 router.get("/all", BookingController.getAllBookings);
 
-router.put("/:id", BookingController.UpdateBooking);
+// Route to update a booking
+router.put("/:id", BookingController.updateBooking);
+
 module.exports = router;

@@ -94,10 +94,17 @@ const loginUser = async (req, res) => {
   }
 };
 
-// Get a single user by ID
+// Get a single user by ID or email
 const getSingleUser = async (req, res) => {
   try {
-    const user = await Users.findById(req.params.id);
+    const identifier = req.params.id;
+
+    // Check if the identifier is an ObjectId or email
+    const query = identifier.includes("@") // If it's an email
+      ? { email: identifier }
+      : { _id: identifier }; // Otherwise, assume it's an ObjectId
+
+    const user = await Users.findOne(query);
     if (!user) {
       return res
         .status(404)
