@@ -1,18 +1,24 @@
 const Users = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
+// Create a new user
 const createUser = async (req, res) => {
   const { firstName, lastName, email, password, service, phone } = req.body;
 
   if (!firstName || !lastName || !email || !password || !phone) {
-    return res.status(400).json({ success: false, message: "All fields are required." });
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required." });
   }
 
   try {
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ success: false, message: "User already exists." });
+      return res
+        .status(400)
+        .json({ success: false, message: "User already exists." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,32 +35,43 @@ const createUser = async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ success: true, message: "User created successfully." });
+    res
+      .status(201)
+      .json({ success: true, message: "User created successfully." });
   } catch (error) {
-    console.error(error);
+    console.error("Error creating user:", error);
     res.status(500).json({ success: false, message: "Server error." });
   }
 };
 
+// User login
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ success: false, message: "Email and password are required." });
+    return res
+      .status(400)
+      .json({ success: false, message: "Email and password are required." });
   }
 
   try {
     const user = await Users.findOne({ email });
     if (!user) {
-      return res.status(404).json({ success: false, message: "User does not exist." });
+      return res
+        .status(404)
+        .json({ success: false, message: "User does not exist." });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Incorrect password." });
+      return res
+        .status(401)
+        .json({ success: false, message: "Incorrect password." });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_SECRET, {
+      expiresIn: "1h",
+    });
 
     res.status(200).json({
       success: true,
@@ -77,20 +94,71 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Get a single user by ID
 const getSingleUser = async (req, res) => {
   try {
     const user = await Users.findById(req.params.id);
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
     }
 
-    res.json({ success: true, message: "User fetched successfully", user });
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully.",
+      user,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching user:", error);
     res.status(500).json({ success: false, message: "Server error." });
   }
 };
 
+// Update user profile
+const updateUser = async (req, res) => {
+  const { firstName, lastName, email } = req.body;
+  const userId = req.params.id;
+
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required." });
+  }
+
+  try {
+    const updateData = { firstName, lastName, email };
+
+    // Handle file upload and set the photo path
+    if (req.file) {
+      updateData.photo = `uploads/${req.file.filename}`; // Relative path for the uploaded image
+    }
+
+    const updatedUser = await Users.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true, // Ensure validation rules are applied
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully.",
+      user: {
+        id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        photo: updatedUser.photo, // Include the updated photo path
+      },
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Failed to update profile." });
+  }
+};
+
+// Change user password
 const changePassword = async (req, res) => {
   const { email, currentPassword, newPassword } = req.body;
 
@@ -115,7 +183,9 @@ const changePassword = async (req, res) => {
     res.status(200).json({ message: "Password changed successfully!" });
   } catch (error) {
     console.error("Error changing password:", error);
-    res.status(500).json({ error: "Failed to change password. Please try again." });
+    res
+      .status(500)
+      .json({ error: "Failed to change password. Please try again." });
   }
 };
 
@@ -123,5 +193,6 @@ module.exports = {
   createUser,
   loginUser,
   getSingleUser,
+  updateUser,
   changePassword,
 };
