@@ -5,7 +5,7 @@ const BookingModal = ({ service, user, onClose }) => {
   const [location, setLocation] = useState("");
 
   const handleBooking = async () => {
-    console.log("sdasdsadasdsadasda");
+    console.log("");
     const email = JSON.parse(localStorage.getItem("user"))?.email;
     if (!email) {
       alert("User email not found. Please log in again.");
@@ -14,7 +14,7 @@ const BookingModal = ({ service, user, onClose }) => {
     console.log(email);
 
     const bookingData = {
-      email,
+      userId: JSON.parse(localStorage.getItem("user"))?.id,
       username: `${user.firstName} ${user.lastName}`,
       category: service.category,
       subCategory: service.subCategory,

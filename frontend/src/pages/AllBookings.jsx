@@ -9,32 +9,17 @@ const AllBookings = () => {
   const handleUpdateStatus = async (bookingId, status) => {
     try {
       const acceptedBy = JSON.parse(localStorage.getItem("user"))?.email;
-      console.log({
-        status,
-        acceptedBy,
-      });
-      const response = await Api.put(`/bookings/${bookingId}`, {
-        status,
-        acceptedBy,
-      });
-      console.log("response: ", response);
-      // Fetch updated bookings after status change
-      fetchBookings();
+      await Api.put(`/bookings/${bookingId}`, { status, acceptedBy });
+      fetchBookings(); // Refresh bookings
     } catch (error) {
       console.error("Error updating booking status:", error);
     }
   };
 
   const fetchBookings = async () => {
-    const email = JSON.parse(localStorage.getItem("user"))?.email;
-    if (!email) {
-      alert("User not logged in. Please log in again.");
-      return;
-    }
-
     try {
       const response = await Api.get(`/bookings/all`);
-      setBookings(response.data); // Assuming the API response contains the booking list
+      setBookings(response.data); // Fetch all bookings with user data
       setLoading(false);
     } catch (error) {
       console.error("Error fetching bookings:", error);
@@ -49,7 +34,7 @@ const AllBookings = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}> Booking Requests</h1>
+      <h1 style={styles.title}>Booking Requests</h1>
       {loading ? (
         <p style={styles.loadingText}>Loading your bookings...</p>
       ) : (

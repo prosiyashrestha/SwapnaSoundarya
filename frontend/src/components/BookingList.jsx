@@ -1,24 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-const BookingList = ({ bookings, onUpdateStatus, fetchAcceptedBy }) => {
-  const [modalData, setModalData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+const BookingList = ({ bookings, onUpdateStatus }) => {
   const user = JSON.parse(localStorage.getItem("user"));
-
-  const handleInfoClick = async (acceptedById) => {
-    try {
-      const acceptedByData = await fetchAcceptedBy(acceptedById);
-      setModalData(acceptedByData[0]);
-      setShowModal(true);
-    } catch (error) {
-      console.error("Error fetching acceptedBy data:", error);
-    }
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setModalData(null);
-  };
 
   return (
     <div style={styles.container}>
@@ -35,12 +18,8 @@ const BookingList = ({ bookings, onUpdateStatus, fetchAcceptedBy }) => {
                 <th style={styles.headerCell}>Price</th>
                 <th style={styles.headerCell}>Location</th>
                 <th style={styles.headerCell}>Status</th>
-                {user?.provider && (
-                  <>
-                    <th style={styles.headerCell}>Requested By</th>
-                    <th style={styles.headerCell}>Action</th>
-                  </>
-                )}
+                <th style={styles.headerCell}>Requested By</th>
+                <th style={styles.headerCell}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -60,66 +39,29 @@ const BookingList = ({ bookings, onUpdateStatus, fetchAcceptedBy }) => {
                       }}
                     >
                       {booking.status}
-                      {!user?.provider &&
-                        booking.status === "Accepted" &&
-                        booking.acceptedBy && (
-                          <button
-                            style={styles.infoButton}
-                            onClick={() => handleInfoClick(booking.acceptedBy)}
-                          >
-                            ℹ️
-                          </button>
-                        )}
                     </span>
                   </td>
-                  {user?.provider && (
-                    <>
-                      <td style={styles.cell}>{booking.username}</td>
-                      <td style={styles.cell}>
-                        {booking.status === "Not Accepted" ? (
-                          <div style={styles.buttonGroup}>
-                            <button
-                              style={styles.acceptButton}
-                              onClick={() =>
-                                onUpdateStatus(booking._id, "Accepted")
-                              }
-                            >
-                              Accept
-                            </button>
-                          </div>
-                        ) : (
-                          <span style={styles.acceptedText}>Accepted</span>
-                        )}
-                      </td>
-                    </>
-                  )}
+                  <td style={styles.cell}>
+                    {booking.userId
+                      ? `${booking.userId.firstName} ${booking.userId.lastName}`
+                      : "N/A"}
+                  </td>
+                  <td style={styles.cell}>
+                    {booking.status === "Not Accepted" ? (
+                      <button
+                        style={styles.acceptButton}
+                        onClick={() => onUpdateStatus(booking._id, "Accepted")}
+                      >
+                        Accept
+                      </button>
+                    ) : (
+                      <span style={styles.acceptedText}>Accepted</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      )}
-
-      {/* Modal for acceptedBy details */}
-      {showModal && modalData && modalData.firstName && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modal}>
-            <h2 style={styles.modalTitle}>Accepted By</h2>
-            <p style={styles.modalText}>
-              <strong>Name:</strong>{" "}
-              {modalData?.firstName + " " + modalData?.lastName || "N/A"}
-            </p>
-            <p style={styles.modalText}>
-              <strong>Email:</strong> {modalData?.email || "N/A"}
-            </p>
-            <p style={styles.modalText}>
-              <strong>Phone:</strong> {modalData?.phone || "999999999"}{" "}
-              {/* Replace 'phone' with the actual key */}
-            </p>
-            <button style={styles.closeButton} onClick={closeModal}>
-              Close
-            </button>
-          </div>
         </div>
       )}
     </div>
@@ -132,7 +74,6 @@ const styles = {
     backgroundColor: "#FFE5EA",
     borderRadius: "8px",
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    overflow: "hidden",
   },
   tableWrapper: {
     overflowX: "auto",
@@ -161,7 +102,6 @@ const styles = {
   cell: {
     padding: "10px",
     fontSize: "15px",
-    color: "#333",
     textAlign: "left",
   },
   statusCell: {
@@ -177,52 +117,17 @@ const styles = {
     textAlign: "center",
     minWidth: "100px",
   },
-  infoButton: {
-    marginLeft: "10px",
-    backgroundColor: "transparent",
-    border: "none",
-    cursor: "pointer",
-    color: "#fff",
-    fontSize: "14px",
-  },
-  modalOverlay: {
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: "#fff",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
-    textAlign: "center",
-    maxWidth: "400px",
-    width: "100%",
-  },
-  modalTitle: {
-    fontSize: "20px",
-    fontWeight: "bold",
-    marginBottom: "15px",
-  },
-  modalText: {
-    fontSize: "16px",
-    marginBottom: "10px",
-  },
-  closeButton: {
-    backgroundColor: "#E91E63",
+  acceptButton: {
+    backgroundColor: "#28a745",
     color: "#fff",
     border: "none",
-    padding: "10px 20px",
+    padding: "8px 15px",
     borderRadius: "5px",
     cursor: "pointer",
-    fontSize: "14px",
+  },
+  acceptedText: {
+    color: "#28a745",
+    fontWeight: "bold",
   },
 };
 
