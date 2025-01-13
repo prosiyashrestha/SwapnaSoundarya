@@ -99,7 +99,6 @@ const getSingleUser = async (req, res) => {
   try {
     const identifier = req.params.id;
 
-    // Check if the identifier is an ObjectId or email
     const query = identifier.includes("@") // If it's an email
       ? { email: identifier }
       : { _id: identifier }; // Otherwise, assume it's an ObjectId
@@ -128,24 +127,28 @@ const updateUser = async (req, res) => {
   const userId = req.params.id;
 
   if (!userId) {
-    return res.status(400).json({ message: "User ID is required." });
+    return res
+      .status(400)
+      .json({ success: false, message: "User ID is required." });
   }
 
   try {
     const updateData = { firstName, lastName, email };
 
-    // Handle file upload and set the photo path
+    // If a file is uploaded, include the file path in updateData
     if (req.file) {
-      updateData.photo = `uploads/${req.file.filename}`; // Relative path for the uploaded image
+      updateData.photo = `uploads/${req.file.filename}`;
     }
 
     const updatedUser = await Users.findByIdAndUpdate(userId, updateData, {
-      new: true,
-      runValidators: true, // Ensure validation rules are applied
+      new: true, // Return the updated document
+      runValidators: true, // Apply schema validation rules
     });
 
     if (!updatedUser) {
-      return res.status(404).json({ message: "User not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
     }
 
     res.status(200).json({
@@ -156,12 +159,14 @@ const updateUser = async (req, res) => {
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         email: updatedUser.email,
-        photo: updatedUser.photo, // Include the updated photo path
+        photo: updatedUser.photo, // Include the photo path in the response
       },
     });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ message: "Failed to update profile." });
+    console.error("Error updating profile:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to update profile." });
   }
 };
 
