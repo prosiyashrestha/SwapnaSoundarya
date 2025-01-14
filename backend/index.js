@@ -1,4 +1,3 @@
-// Importing necessary modules
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
@@ -13,30 +12,52 @@ const app = express();
 // Load environment variables
 dotenv.config();
 
+// Validate required environment variables
+if (!process.env.DB_URL) {
+  console.error("Error: DB_URL is not defined in environment variables.");
+  process.exit(1); // Exit the application if critical variables are missing
+}
+
+if (!process.env.JWT_TOKEN_SECRET) {
+  console.error(
+    "Error: JWT_TOKEN_SECRET is not defined in environment variables."
+  );
+  process.exit(1);
+}
+
 // Connect to MongoDB
 connectDB();
 
-// CORS policy
+// CORS policy configuration
 const corsPolicy = {
-  origin: ["http://localhost:3000", "http://your-production-domain.com"],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "http://your-production-domain.com",
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`Blocked by CORS policy: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsPolicy));
 
-// Middleware to parse JSON
+// Middleware to parse JSON and URL-encoded data
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Ensure the `uploads/` directory exists
+// Ensure `uploads` directory exists
 const uploadsDirectory = path.join(__dirname, "uploads");
-app.use("/uploads", express.static(uploadsDirectory));
-
-// Ensure the uploads directory exists
 if (!fs.existsSync(uploadsDirectory)) {
   fs.mkdirSync(uploadsDirectory);
 }
 
-// Static folder for uploaded files
+// Serve static files from the `uploads` directory
 app.use("/uploads", express.static(uploadsDirectory));
 
 // API Routes
@@ -53,9 +74,28 @@ app.use((req, res, next) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error("Error Stack:", err.stack);
-  res
-    .status(500)
-    .json({ error: "Something went wrong!", details: err.message });
+  res.status(500).json({
+    error: "Something went wrong!",
+    details:
+      process.env.NODE_ENV === "development"
+        ? err.message
+        : "Internal Server Error",
+  });
+});
+
+// Graceful shutdown for MongoDB connection
+process.on("SIGINT", async () => {
+  console.log("SIGINT received. Closing MongoDB connection...");
+  await mongoose.connection.close();
+  console.log("MongoDB connection closed.");
+  process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM received. Closing MongoDB connection...");
+  await mongoose.connection.close();
+  console.log("MongoDB connection closed.");
+  process.exit(0);
 });
 
 // Define the server port

@@ -2,6 +2,7 @@ const Users = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const crypto = require("crypto");
 
 // Create a new user
 const createUser = async (req, res) => {
@@ -87,10 +88,12 @@ const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error. Please try again later.",
-    });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while logging in. Please try again.",
+      });
   }
 };
 
@@ -99,9 +102,9 @@ const getSingleUser = async (req, res) => {
   try {
     const identifier = req.params.id;
 
-    const query = identifier.includes("@") // If it's an email
+    const query = identifier.includes("@")
       ? { email: identifier }
-      : { _id: identifier }; // Otherwise, assume it's an ObjectId
+      : { _id: identifier };
 
     const user = await Users.findOne(query);
     if (!user) {
@@ -121,6 +124,46 @@ const getSingleUser = async (req, res) => {
   }
 };
 
+// Reset password
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Email is required." });
+  }
+
+  try {
+    const user = await Users.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
+    }
+
+    const generatedPassword = crypto.randomBytes(6).toString("hex");
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successfully.",
+      generatedPassword,
+    });
+  } catch (error) {
+    console.error("Error in resetPassword:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Server error while resetting password.",
+      });
+  }
+};
+
 // Update user profile
 const updateUser = async (req, res) => {
   const { firstName, lastName, email } = req.body;
@@ -135,14 +178,13 @@ const updateUser = async (req, res) => {
   try {
     const updateData = { firstName, lastName, email };
 
-    // If a file is uploaded, include the file path in updateData
     if (req.file) {
       updateData.photo = `uploads/${req.file.filename}`;
     }
 
     const updatedUser = await Users.findByIdAndUpdate(userId, updateData, {
-      new: true, // Return the updated document
-      runValidators: true, // Apply schema validation rules
+      new: true,
+      runValidators: true,
     });
 
     if (!updatedUser) {
@@ -159,7 +201,7 @@ const updateUser = async (req, res) => {
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         email: updatedUser.email,
-        photo: updatedUser.photo, // Include the photo path in the response
+        photo: updatedUser.photo,
       },
     });
   } catch (error) {
@@ -170,7 +212,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Change user password
+// Change password
 const changePassword = async (req, res) => {
   const { email, currentPassword, newPassword } = req.body;
 
@@ -205,6 +247,7 @@ module.exports = {
   createUser,
   loginUser,
   getSingleUser,
+  resetPassword,
   updateUser,
   changePassword,
 };
