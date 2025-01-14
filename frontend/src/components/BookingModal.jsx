@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import Api from "../apis/Api"; // Update the path to your Api file
+import { Link } from "react-router-dom";
 
 const BookingModal = ({ service, user, onClose }) => {
   const [location, setLocation] = useState("");
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const handleBooking = async () => {
-    console.log("");
     const email = JSON.parse(localStorage.getItem("user"))?.email;
     if (!email) {
       alert("User email not found. Please log in again.");
       return;
     }
-    console.log(email);
 
     const bookingData = {
       userId: JSON.parse(localStorage.getItem("user"))?.id,
@@ -23,13 +23,10 @@ const BookingModal = ({ service, user, onClose }) => {
       location,
     };
 
-    console.log(bookingData);
-
     try {
       const response = await Api.post("/bookings/book", bookingData);
       if (response.status === 201) {
-        alert("Your booking has been added!");
-        onClose(); // Close the modal
+        setBookingSuccess(true); // Show the success modal
       } else {
         alert("Failed to confirm booking. Please try again.");
       }
@@ -38,6 +35,32 @@ const BookingModal = ({ service, user, onClose }) => {
       alert("An error occurred while booking the service. Please try again.");
     }
   };
+
+  if (bookingSuccess) {
+    return (
+      <div style={styles.modalOverlay}>
+        <div style={styles.successModal}>
+          <img
+            src="booked.png" // Replace with your checkmark icon's path
+            alt="Success"
+            style={styles.successIcon}
+          />
+          <h2 style={styles.successTitle}>
+            Thank you for booking, {user.firstName}!
+          </h2>
+          <p style={styles.successMessage}>Your booking has been successful.</p>
+          <div style={styles.buttonContainer}>
+            <button style={styles.okButton} onClick={onClose}>
+              Okay
+            </button>
+            <Link to="/feedback">
+              <button style={styles.feedbackButton}>Give Feedback</button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.modalOverlay}>
@@ -63,10 +86,6 @@ const BookingModal = ({ service, user, onClose }) => {
             <strong>Payment Method:</strong>
           </p>
           <div style={styles.paymentMethods}>
-            <button style={styles.paymentButton}>
-              <img src="khalti.png" alt="Khalti" style={styles.paymentIcon} />
-              Khalti
-            </button>
             <button style={styles.paymentButton}>CASH</button>
           </div>
           <p style={styles.modalDetail}>
@@ -188,6 +207,53 @@ const styles = {
     borderRadius: "5px",
     fontSize: "14px",
     cursor: "pointer",
+  },
+  successModal: {
+    backgroundColor: "#FDEDEE",
+    padding: "40px",
+    borderRadius: "10px",
+    textAlign: "center",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+    width: "400px",
+  },
+  successIcon: {
+    width: "50px",
+    marginBottom: "20px",
+  },
+  successTitle: {
+    fontSize: "22px",
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: "10px",
+  },
+  successMessage: {
+    fontSize: "16px",
+    color: "#555",
+    marginBottom: "30px",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+  okButton: {
+    backgroundColor: "#6EC1E4",
+    color: "#fff",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "16px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  feedbackButton: {
+    backgroundColor: "transparent",
+    color: "#6EC1E4",
+    border: "none",
+    padding: "10px 20px",
+    fontSize: "16px",
+    cursor: "pointer",
+    textDecoration: "underline",
   },
 };
 

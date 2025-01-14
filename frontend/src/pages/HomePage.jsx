@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { fetchFeedbacks } from "../apis/Api";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import toast CSS
 
 const HomePage = () => {
   const [feedbackList, setFeedbackList] = useState([]);
@@ -17,10 +19,22 @@ const HomePage = () => {
     };
 
     fetchAllFeedbacks();
+
+    // Show toast message if user is logged in
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.firstName && user.lastName) {
+      toast.success(`Hello, ${user.firstName} ${user.lastName}! Welcome back`, {
+        position: "top-right", // Fixed position
+        autoClose: 3000, // Auto-close the toast after 3 seconds
+      });
+    }
   }, []);
 
   return (
     <div style={styles.container}>
+      {/* Toast Container for displaying toasts */}
+      <ToastContainer />
+
       {/* Hero Section */}
       <section style={styles.heroSection}>
         <img src="hpvid.gif" alt="Hero Animation" style={styles.heroGif} />
@@ -54,12 +68,16 @@ const HomePage = () => {
       <section style={styles.feedbackSection}>
         <h2 style={styles.feedbackTitle}>View Feedbacks of our Services</h2>
         <div style={styles.feedbackCards}>
-          {feedbackList.map((item, index) => (
-            <div key={index} style={styles.feedbackCard}>
-              <h3 style={styles.feedbackUsername}>{item.username}</h3>
-              <p style={styles.feedbackText}>{item.feedback}</p>
-            </div>
-          ))}
+          {feedbackList.length > 0 ? (
+            feedbackList.map((item, index) => (
+              <div key={index} style={styles.feedbackCard}>
+                <h3 style={styles.feedbackUsername}>{item.username}</h3>
+                <p style={styles.feedbackText}>{item.feedback}</p>
+              </div>
+            ))
+          ) : (
+            <p>No feedback available</p>
+          )}
         </div>
       </section>
     </div>

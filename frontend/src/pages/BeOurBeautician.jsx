@@ -31,16 +31,21 @@ const BeOurBeautician = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    // Log formData to verify all fields are populated
+    console.log("FormData:", formData);
+  
     if (!photo || !cv) {
       alert("Please upload both photo and CV.");
       return;
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match.");
       return;
     }
-
+  
+    // Create FormData object for the API request
     const data = new FormData();
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);
@@ -49,7 +54,12 @@ const BeOurBeautician = () => {
     data.append("password", formData.password);
     data.append("photo", photo);
     data.append("cv", cv);
-
+  
+    // Log data for debugging
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}:`, value);
+    }
+  
     try {
       const response = await Api.post("/provider/beourbeautician", data, {
         headers: {

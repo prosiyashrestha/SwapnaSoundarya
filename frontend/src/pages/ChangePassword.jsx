@@ -7,6 +7,8 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -31,9 +33,13 @@ const ChangePassword = () => {
       };
 
       const response = await changePassword(payload);
-      alert(response.message || "Password changed successfully!");
-      setError(null);
-      navigate("/");
+      if (response.message || response.status === 200) {
+        setUserName(`${user.firstName} ${user.lastName}`);
+        setShowSuccessModal(true);
+        setError(null);
+      } else {
+        setError(response.error || "Failed to change password.");
+      }
     } catch (err) {
       console.error("Error changing password:", err);
       setError(
@@ -43,12 +49,34 @@ const ChangePassword = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    navigate("/");
+  };
+
   const handleCancel = () => {
     navigate("/");
   };
 
   return (
     <div style={styles.pageContainer}>
+      {showSuccessModal && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modal}>
+            <img
+              src="booked.png" // Replace with the actual path to your checkmark icon
+              alt="Success"
+              style={styles.successIcon}
+            />
+            <h2 style={styles.successTitle}>
+              Your password has been saved, {userName}!
+            </h2>
+            <button style={styles.okButton} onClick={handleCloseModal}>
+              Okay
+            </button>
+          </div>
+        </div>
+      )}
       <h1 style={styles.title}>Change Password</h1>
       <div style={styles.card}>
         <form style={styles.form} onSubmit={handleSubmit}>
@@ -182,6 +210,46 @@ const styles = {
     color: "red",
     fontSize: "14px",
     marginBottom: "10px",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modal: {
+    backgroundColor: "#FDEDEE",
+    padding: "40px",
+    borderRadius: "10px",
+    textAlign: "center",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+    width: "400px",
+  },
+  successIcon: {
+    width: "50px",
+    marginBottom: "20px",
+  },
+  successTitle: {
+    fontSize: "22px",
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: "20px",
+  },
+  okButton: {
+    backgroundColor: "#6EC1E4",
+    color: "#fff",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    fontSize: "16px",
+    cursor: "pointer",
+    fontWeight: "bold",
   },
 };
 
